@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tlu.projekt.model.Item;
-import tlu.projekt.service.ItemServiceBla;
+import tlu.projekt.service.ItemService;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class ItemController {
 
     @Autowired
-    ItemServiceBla itemservice;
+    ItemService itemservice;
     private Long id;
 
     @GetMapping("items")
@@ -42,10 +42,12 @@ public class ItemController {
     }
 
     @GetMapping("item")
-    public Item getItem() {
+    public Item getItem(@RequestBody Long id) {
 
         return itemservice.getItem(id);
     }
+
+
 }
 
     //DFELETE
