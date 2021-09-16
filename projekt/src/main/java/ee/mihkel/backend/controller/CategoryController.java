@@ -1,21 +1,18 @@
-package tlu.projekt.controller;
+package ee.mihkel.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import tlu.projekt.model.Category;
-import tlu.projekt.service.CategoryService;
+import org.springframework.web.bind.annotation.*;
+import ee.mihkel.backend.model.Category;
+import ee.mihkel.backend.service.CategoryService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CategoryController {
 
     @Autowired
     CategoryService categoryservice;
-    private Long id;
 
     @GetMapping("categories")
     public List<Category> getCategories() {
@@ -25,24 +22,24 @@ public class CategoryController {
 
     @PostMapping("categories")
     public String postCategory(@RequestBody Category category) {
-        categoryservice.saveCategory(catgeory);
+        categoryservice.saveCategory(category);
         return "Kategooria edukalt lisatud!";
     }
 
-    @PostMapping("edit")
-    public String editCategory(@RequestBody Category category, Long id) {
+    @PostMapping("editcategory/{id}")
+    public String editCategory(@PathVariable("id") long id, @RequestBody Category category) {
         categoryservice.editCategory(category, id);
         return "Kategooria edukalt muudetud!";
     }
 
-    @PostMapping("delete")
-    public String deleteCategory(@RequestBody Long id) {
+    @PostMapping("deletecategory/{id}")
+    public String deleteCategory(@PathVariable("id") long id) {
         categoryservice.deleteCategory(id);
         return "Kategooria edukalt kustutatud!";
     }
 
-    @GetMapping("category")
-    public Category getCategory(@RequestBody Long id) {
+    @GetMapping("category/{id}")
+    public Optional<Category> getCategory(@PathVariable("id") long id) {
 
         return categoryservice.getCategory(id);
     }

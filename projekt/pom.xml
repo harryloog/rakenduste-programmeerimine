@@ -11,12 +11,10 @@
     <groupId>tlu</groupId>
     <artifactId>projekt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>projekt</name>
-    <description>projekt</description>
+    <name>Backend</name>
+    <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>

@@ -1,4 +1,4 @@
-package tlu.projekt.model;
+package ee.mihkel.backend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,11 +16,14 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Component
 @Entity
-public class Item {
+public class Category {
     @Id
     @GeneratedValue
     private Long id;
     private String name;
-    private int price;
-    private String category;
+    private CategoryType category;
+}
+
+enum CategoryType {
+    PREMIUM, DELUXE, BASIC
 }

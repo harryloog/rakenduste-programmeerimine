@@ -1,13 +1,13 @@
-package tlu.projekt;
+package ee.mihkel.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjektApplication {
+public class BackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProjektApplication.class, args);
+        SpringApplication.run(BackendApplication.class, args);
     }
 
 }

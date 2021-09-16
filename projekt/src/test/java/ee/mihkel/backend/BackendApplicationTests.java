@@ -1,10 +1,10 @@
-package tlu.projekt;
+package ee.mihkel.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProjektApplicationTests {
+class BackendApplicationTests {
 
     @Test
     void contextLoads() {

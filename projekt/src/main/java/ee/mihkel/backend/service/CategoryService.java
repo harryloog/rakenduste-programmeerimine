@@ -1,11 +1,12 @@
-package tlu.projekt.service;
+package ee.mihkel.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tlu.projekt.model.Category;
-import tlu.projekt.repository.CategoryRepository;
+import ee.mihkel.backend.model.Category;
+import ee.mihkel.backend.repository.CategoryRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -31,8 +32,5 @@ public class CategoryService {
         categoryrepository.delete(category);
     }
 
-    public Category getCategory(Long id) {
-        Category category = categoryrepository.getById(id);
-        return category;
-    }
+    public Optional<Category> getCategory(Long id) { return categoryrepository.findById(id); }
 }

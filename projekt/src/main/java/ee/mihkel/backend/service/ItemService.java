@@ -1,11 +1,12 @@
-package tlu.projekt.service;
+package ee.mihkel.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tlu.projekt.model.Item;
-import tlu.projekt.repository.ItemRepository;
+import ee.mihkel.backend.model.Item;
+import ee.mihkel.backend.repository.ItemRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -31,8 +32,5 @@ public class ItemService {
         itemrepository.delete(item);
     }
 
-    public Item getItem(Long id) {
-        Item item = itemrepository.getById(id);
-        return item;
-    }
+    public Optional<Item> getItem(Long id) { return itemrepository.findById(id); }
 }

@@ -1,4 +1,4 @@
-package tlu.projekt.model;
+package ee.mihkel.backend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -16,14 +17,11 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Component
 @Entity
-public class Category {
+public class Item {
     @Id
     @GeneratedValue
     private Long id;
     private String name;
-    private CategoryType category;
-}
-
-enum CategoryType {
-    PREMIUM, DELUXE, BASIC
+    private int price;
+    private String category;
 }
