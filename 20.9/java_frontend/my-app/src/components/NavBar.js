@@ -1,15 +1,19 @@
-import './NavBar.css';
+import './Navbar.css';
 import { Link } from 'react-router-dom';
 
-function NavBar() {
-    return(
-        <div className="navbar">
-            <Link to="/cart">
-                <img className="" src="../../public/shopping-cart.svg" alt=""/>
-            </Link>
-            <img className="" src="../../public/carts.svg" alt=""/>
-        </div>
-    );
+function Navbar() {
+  return(
+    <div className="navbar">
+      <Link to="/">
+        <img className="logo" src="webshio.png" alt=""/>
+      </Link>
+      <Link to="cart">
+        <img className="cart" src="cart.svg" alt=""/>
+      </Link>
+    </div>
+  );
 }
 
-export default NavBar;
+// alumine tehke ise
+
+export default Navbar;
