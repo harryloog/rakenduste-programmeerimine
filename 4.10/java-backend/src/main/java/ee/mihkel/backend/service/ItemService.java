@@ -1,43 +1,36 @@
 package ee.mihkel.backend.service;
 
-import ee.mihkel.backend.model.Item;
-import ee.mihkel.backend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ee.mihkel.backend.model.Item;
+import ee.mihkel.backend.repository.ItemRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-// Teeb beaniks, et oleks võimalik serveris kasutada seda classi
 @Service
 public class ItemService {
 
-    // seob ära ItemService classi, et oleks koguaeg ligipääs olemas
-    // Singleton objekt (ei teki iga kord uut mälukohta)
-    @Autowired
-    ItemRepository itemRepository;
+    @Autowired //Kogu aeg ühendus selle elemendiga
+    ItemRepository itemrepository;
 
     public List<Item> getItems() {
-        // funktsioon on Repository's olemas
-        return itemRepository.findAll();
+        return itemrepository.findAll();
     }
 
     public void saveItem(Item item) {
-        // funktsioon on Repository's olemas
-        itemRepository.save(item);
+        itemrepository.save(item);
+    }
+
+    public void editItem(Item item, Long id) {
+        item.setId(id);
+        itemrepository.save(item);
     }
 
     public void deleteItem(Long id) {
-        itemRepository.deleteById(id);
+        Item item = itemrepository.getById(id);
+        itemrepository.delete(item);
     }
 
-    public void editItem(Item item) {
-        itemRepository.save(item);
-    }
-
-    public Item getOneItem(Long id) throws Exception {
-        if (itemRepository.findById(id).isPresent()) {
-            return itemRepository.findById(id).get();
-        }
-        throw new Exception();
-    }
+    public Optional<Item> getItem(Long id) { return itemrepository.findById(id); }
 }

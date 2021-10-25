@@ -1,3 +1,28 @@
 form {
-    text-align: center;
+  text-align: center;
+  margin: 50px;
   }
+
+form * {
+  margin: 10px;
+}
+
+form label {
+  color: rgb(63, 25, 13);
+}
+
+form button {
+  background-color: rgb(187, 41, 41);
+  border-style: solid;
+  border-radius: 3px;
+  border-color: brown;
+  color: rgb(180, 161, 161);
+}
+
+form button:hover {
+  background-color: rgb(224, 73, 73);
+  border-style: solid;
+  border-radius: 3px;
+  border-color: rgb(199, 97, 97);
+  color: white;
+}

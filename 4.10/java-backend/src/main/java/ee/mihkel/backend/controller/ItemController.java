@@ -1,72 +1,57 @@
 package ee.mihkel.backend.controller;
 
-import ee.mihkel.backend.model.Item;
-import ee.mihkel.backend.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ee.mihkel.backend.model.Item;
+import ee.mihkel.backend.service.ItemService;
 
 import java.util.List;
+import java.util.Optional;
 
-// Teeb beaniks, et oleks võimalik serveris kasutada seda classi
 @RestController
-// Võimaldab pääseda localhost:3000 aadressil meie API otsadele ligi
 @CrossOrigin(origins = "http://localhost:3000")
 public class ItemController {
 
-    // seob ära ItemService classi, et oleks koguaeg ligipääs olemas
-    // Singleton objekt (ei teki iga kord uut mälukohta)
     @Autowired
-    ItemService itemService;
+    ItemService itemservice;
 
-    // localhost:8080/items ja GET päring
     @GetMapping("items")
-        // tagastab esemete listi päringu lõpuks
     public List<Item> getItems() {
-        // pöördub itemService funktsiooni poole ja seal tehakse repository'ga
-        // suhtlus
-        return itemService.getItems();
+
+        return itemservice.getItems();
     }
 
-    // localhost:8080/items ja POST päring, millele on kaasa antud body
     @PostMapping("items")
-    // tagastab mittemidagi  // nõuab body ja mis tüübiks ta selle body teeb
-    public void postItem(@RequestBody Item item) {
-        // pöördub itemService funktsiooni poole ja seal tehakse repository'ga
-        // suhtlus
-        itemService.saveItem(item);
+    public String postItem(@RequestBody Item item) {
+        itemservice.saveItem(item);
+        return "Ese edukalt lisatud ";
     }
 
-    @DeleteMapping("delete-item/{id}")
-    public List<Item> deleteItem(@PathVariable Long id) {
-        itemService.deleteItem(id);
-        return itemService.getItems();
+    @PostMapping("edititem/{id}")
+    public String editItem(@PathVariable("id") long id,@RequestBody Item item) {
+        itemservice.editItem(item, id);
+        return "Ese edukalt muudetud ";
     }
 
-    @PostMapping("edit-item")
-    public void editItem(@RequestBody Item item) {
-        itemService.editItem(item);
+    @PostMapping("deleteitem/{id}")
+    public String deleteItem(@PathVariable("id") long id) {
+        itemservice.deleteItem(id);
+        return "Ese edukalt kustutatud ";
     }
 
-    @GetMapping("view-item/{id}")
-    public Item getOneItem(@PathVariable Long id) throws Exception {
-        return itemService.getOneItem(id);
+    @GetMapping("item/{id}")
+    public Optional<Item> getItem(@PathVariable("id") long id) {
+
+        return itemservice.getItem(id);
     }
 
-    //* Täna:
-    //* andmebaas PostgreSQL -- relatsiooniline
 
-    //* delete päringu
-    //* edit päringu
-    //* view one item päringu
-
-    // Swagger
-
-    // Järgmine kord:
-    // frontendis kustuta päringu valmis
-    // edit päring frontendis
-    // view one item päring frontendis
-
-    // custom exceptionite saatmine ??
-    // cache backendis ??
-    // ostukorvi lisada/eemaldada ???
 }
+
+//DFELETE
+//edit
+//view one item päring
+
+// kodutöö github, linkj mwiliga õppejule
+
+//kategoorai
