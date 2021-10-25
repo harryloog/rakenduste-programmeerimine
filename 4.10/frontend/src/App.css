@@ -1,0 +1,16 @@
+h1 {
+  text-align: center;
+}
+
+body {
+  margin: 50px;
+  background-color: rgb(243, 213, 213);
+}
+
+.list {
+  margin: 20px;
+}
+
+.list div {
+  margin: 10px;
+}
