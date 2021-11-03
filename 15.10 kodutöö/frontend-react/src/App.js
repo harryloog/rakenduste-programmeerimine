@@ -2,6 +2,8 @@ import { useState } from "react"
 import './App.css';
 import Fun from './components/Fun';
 import Greeting from './components/Greeting';
+import Square from "./components/Square";
+import Sum from "./components/Sum";
 
 function App() {
   const [magicNumber, setMagicNumber] = useState(0)
@@ -31,6 +33,8 @@ function App() {
         setShow={setShow}
       />
       <Greeting name="Raimo" age="34"/>
+      <Square number={12}/>
+      <Sum/>    
     </div>
   );
 }
