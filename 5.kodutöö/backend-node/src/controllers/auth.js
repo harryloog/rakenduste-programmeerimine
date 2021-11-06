@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
 }
 
 exports.signup = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body
+  const { firstName, lastName, email, password, againPassword } = req.body
 
   try {
     const user = await User.findOne({ email })
@@ -47,11 +47,15 @@ exports.signup = async (req, res) => {
     const hash = await bcrypt.hash(password, salt)
     if (!hash) throw Error("Something critical happened 123172387")
 
+    const hash2 = await bcrypt.hash(againPassword, salt)
+    if (hash2!=hash) throw Error("Something critical happened 172387123")
+
     const newUser = new User({
       firstName,
       lastName,
       email,
-      password: hash
+      password: hash,
+      againPassword: hash
     })
 
     const savedUser = await newUser.save()

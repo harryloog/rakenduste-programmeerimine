@@ -1,9 +1,10 @@
 import { loginUser } from "../store/actions"
 import { Context } from "../store";
+import { useContext, useState } from "react";
 
 const Login = () => {
-    const [user, setUsername] = React.useState("")
-    const [token, setPassword] = React.useState("")
+    const [user, setUsername] = useState("")
+    const [token, setPassword] = useState("")
     const [state, dispatch] = useContext(Context);
 
     const handleSubmit = (e) => {

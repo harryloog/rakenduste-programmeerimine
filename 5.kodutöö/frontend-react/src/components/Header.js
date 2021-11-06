@@ -7,11 +7,11 @@ function Header() {
         <div><Link to="/">
           Home
         </Link></div>
-       <div><Link to="/greeting">
-          Greeting
+       <div><Link to="/login">
+          Login
         </Link></div>     
-        <div><Link to="/fun">
-          Fun
+        <div><Link to="/register">
+          Register
         </Link></div>     
         <div><Link to="/posts">
           Posts

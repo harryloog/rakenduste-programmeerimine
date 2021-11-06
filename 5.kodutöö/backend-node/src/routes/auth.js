@@ -41,6 +41,15 @@ router.post(
       .withMessage("Must be correctly formatted e-mail"),
     check("password")
       .isLength({ min: 6 })
+      .contains('password', {ignoreCase: true })
+      .withMessage("Must not contain 'password'")
+      .isStrongPassword
+      .withMessage("Must be at least 6 characters long"),
+    check("againPassword")
+      .isLength({ min: 6 })
+      .contains('password', {ignoreCase: true })
+      .withMessage("Must not contain 'password'")
+      .isStrongPassword
       .withMessage("Must be at least 6 characters long"),
   ],
   validationMiddleware,

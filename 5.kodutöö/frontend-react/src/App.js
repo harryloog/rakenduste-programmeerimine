@@ -5,6 +5,8 @@ import Fun from "./components/Fun";
 import Posts from "./pages/Posts";
 import StateExample from "./components/StateExample";
 import EditPost from "./pages/EditPost";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Switch>
           <Route exact path='/posts/:id' component={EditPost} />
           <Route exact path="/posts" component={Posts} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
           <Route exact path="/greeting" component={Greeting} />
           <Route exact path="/fun" component={Fun} />
           <Route exact path="/ex" component={StateExample} />

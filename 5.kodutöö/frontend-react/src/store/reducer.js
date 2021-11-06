@@ -1,4 +1,4 @@
-import { POST_ADD, POST_REMOVE, USER_LOGIN, USER_LOGOUT } from "./actions";
+import { POST_ADD, POSTS_UPDATE, POST_REMOVE, USER_LOGIN, USER_LOGOUT, USER_CREATE } from "./actions";
 
 const postReducer = (state, action) => {
   switch(action.type){
@@ -13,7 +13,7 @@ const postReducer = (state, action) => {
         data: state.data.filter(post => post.id !== action.payload)
       }
     // Kodutööna uue listi vastu võtmine maybe
-    case "POSTS_UPDATE": 
+    case POSTS_UPDATE: 
         return {
           ...state,
           data: action.payload
@@ -38,7 +38,9 @@ const authReducer = (state, action) => {
         user: null
       }
     case USER_CREATE:
-      return {}
+      return {
+        ...state
+      }
     default:
       return state
   }

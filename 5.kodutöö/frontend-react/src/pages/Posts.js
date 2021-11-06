@@ -2,6 +2,7 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store";
 import { addPost, updatePosts } from "../store/actions";
 import { Table } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 function Posts() {
@@ -117,7 +118,7 @@ function Posts() {
     dataIndex: 'operation',
     render: (_, record) =>
       state.posts.data.length >= 1 ? (
-        <Link to={`/posts/${record.id}`}>Edit</Link>
+        <Link to={`/posts/${record.id}`}><EditOutlined /></Link>
       ) : null,
   },
   ];
@@ -147,7 +148,7 @@ function Posts() {
         <button type="submit">Submit</button>
       </form>
       
-      <Table columns={columns} dataSource={state.posts.data}  />
+      <Table style={{textAlign: "center" }} columns={columns} dataSource={state.posts.data}  />
     </div>
   );
 }
