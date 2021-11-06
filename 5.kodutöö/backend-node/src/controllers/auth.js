@@ -34,7 +34,22 @@ exports.login = async (req, res) => {
 }
 
 exports.signup = async (req, res) => {
-  const { firstName, lastName, email, password, againPassword } = req.body
+  const escapeHTML = str =>
+  str.replace(
+    /[&<>'"]/g,
+    tag =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag)
+  );
+  
+  const { firstName, lastName, email, password, againPassword } = escapeHTML(req.body)
+
+  
 
   try {
     const user = await User.findOne({ email })
