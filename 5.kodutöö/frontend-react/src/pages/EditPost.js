@@ -2,128 +2,105 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { useParams } from "react-router";
 import { Context } from "../store";
 import { updatePosts, removePost } from "../store/actions";
-import { Table } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Input, Space } from 'antd';
+import { useHistory } from "react-router-dom";
+import '../components/App.css';
 
 function EditPost(){
-  const id = useParams();
+  const {id} = useParams();
   const [state, dispatch] = useContext(Context);
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [currentPost, setCurrentPost] = useState([]);
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
-  
+  const history = useHistory();
 
   useEffect(()=>{
-    /* fetch('http://localhost:8081/api/post/').then(res => {
-      return res.json();
-    }).then(async (data) =>{
-      console.log(data);
-      await dispatch(updatePosts(data))
-      console.log(state.posts.data)
-    }); 
-   */dispatch(updatePosts([
-      {
-        id: 1,
-        title: "Test-prefetched-array-1",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-      {
-        id: 2,
-        title: "Test-prefetched-array-2",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-      {
-        id: 3,
-        title: "Test-prefetched-array-3",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-      {
-        id: 4,
-        title: "Test-prefetched-array-4",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-    ]))
-  },[]);  
+    fetch('http://localhost:8081/api/post/'+id)
+    .then((res) => res.json())
+    .then(async (data) => {
+      setTitle(data.title);
+      setText(data.text);
+      setCurrentPost(data);
+      await dispatch(updatePosts(data));
+      console.log(state.posts.data, currentPost);
+    });
+  }, []);
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setTitle("");
-    setText("");
-
     updatePost()
 
-    if (inputRef1.current) inputRef1.current.focus();
-    else if (inputRef2.current) inputRef2.current.focus();
+    history.push('/posts')
   };
 
   const handleDelete = () => {
     dispatch(removePost(id));
-    /* fetch('http://localhost:8081/api/post/delete/' + id, {
+    fetch('http://localhost:8081/api/post/delete/' + id, {
       method: 'DELETE',
-      headers: {
-        'Content-Type':'application/json'
-      } 
-    });*/
+    });
+    history.push('/posts')
   }
 
-  const updatePost = () => {
+  async function updatePost  ()  {
+    const nullUser = state.auth.user == null ? "none" : state.auth.user
     const updatedPost = {
-      ...(state.posts.data.find(obj => {return obj.id === id})),
+      ...currentPost,
       title,
       text,
-      changedby: state.auth.user
+      changedby: nullUser
     };
+    console.log(updatedPost); 
 
-    // Salvestame andmebaasi ja kui on edukas, 
-    // siis teeme dispatchi ja uuendame state lokaalselt
-
-    dispatch(updatePosts(updatedPost));
-  };
+    fetch('http://localhost:8081/api/post/update/' + id, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(updatedPost),
+    }).then(res => {
+      return res.json();
+    }).then(async (data) =>{
+      console.log(data)
+    });
+  }
 
   console.log({ inputRef1, inputRef2 });
-  console.log(state.posts.data)
-  const currentPost = state.posts.data.find(x => x.id === id)
-  setTitle(currentPost.title)
-  setText(currentPost.text)
 
-return (
+  return (
     <div style={{ textAlign: "center" }}>
       <h1>Posts</h1>
       <form onSubmit={handleSubmit}>
         <label>Post title:</label>
-        <input
+      <br/>
+        <Input
+          placeholder="Title"
           ref={inputRef1}
           type="text"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => setTitle( e.target.value)}
           autoFocus
         />
+        <br/>
         <label>Post text:</label>
-        <input
+      <br/>
+        <Input
+          placeholder="Text"
           ref={inputRef2}
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
           autoFocus
         />
-        <button type="submit">Submit</button>
-        <button type="primary" onClick={handleDelete}>Delete</button>
+        <br/><br/>
+        <Space>
+          <Button htmlType="submit" type="primary">Submit</Button>
+          <Button type="primary" danger onClick={handleDelete}>Delete</Button>
+        </Space>
+      <br/><br/>
       </form>
+      
     </div>
   );
 }

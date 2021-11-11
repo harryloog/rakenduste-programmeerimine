@@ -37,10 +37,6 @@ const authReducer = (state, action) => {
         token: null,
         user: null
       }
-    case USER_CREATE:
-      return {
-        ...state
-      }
     default:
       return state
   }

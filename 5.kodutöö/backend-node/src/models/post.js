@@ -1,14 +1,13 @@
 const { Schema, model } = require('mongoose')
 
 const postSchema = new Schema({
-  id: { type: int, required: true },
-  title: { type: String, required: true },
-  text: { type: String, required: true },
-  date: { type: String, required: true },
-  author: { type: String, required: true },
-  changedby: { type: String, required: true }
+  title: { type: String, default: 'Title' },
+  text: { type: String, default: 'post' },
+  date: { type: String, default: Date.now() },
+  author: { type: String, default: 'anonymous' },
+  changedby: { type: String, default: 'not changed' },
 });
 
-const Post = model("Post", postSchema)
+const Post = model('Post', postSchema)
 
 module.exports = Post

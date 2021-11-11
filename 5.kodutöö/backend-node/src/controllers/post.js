@@ -6,6 +6,14 @@ exports.getPosts = async (req, res) => {
   res.status(200).send(posts)
 }
 
+exports.getPost = async (req, res) => {
+  const { id } = req.params
+
+  const post = await Post.findById(id)
+  
+  res.status(200).send(post)
+}
+
 exports.createPost = async (req, res) => {
   // Saaksite info kätta req.body -st
 
@@ -19,7 +27,7 @@ exports.createPost = async (req, res) => {
 }
 
 exports.updatePost = async (req, res) => {
-  const { id } = req.body.id;
+  const { id } = req.params
   const createdPost = await Post.findById({ _id: id})
   createdPost = req.body;
   const savedPost = await createdPost.save()
@@ -28,7 +36,7 @@ exports.updatePost = async (req, res) => {
 }
 
 exports.deletePost = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params
 
   const post = await Post.findOneAndDelete({ _id: id })
 

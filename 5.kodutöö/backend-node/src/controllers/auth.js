@@ -3,7 +3,19 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/User")
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body
+  const escapeHTML = str =>
+  str.replace(
+    /[&<>'"]/g,
+    tag =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag)
+  );
+  const { email, password } = escapeHTML(req.body)
 
   try {
     const user = await User.findOne({ email })

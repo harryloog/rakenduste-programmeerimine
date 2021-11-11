@@ -1,9 +1,11 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store";
 import { addPost, updatePosts } from "../store/actions";
-import { Table } from 'antd';
+import { Table, Button, Input } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import './Posts.css';
+import '../components/App.css';
 
 function Posts() {
   const [title, setTitle] = useState("");
@@ -11,48 +13,15 @@ function Posts() {
   const [state, dispatch] = useContext(Context);
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
-
-  // Ilma dependency massivita ehk ilma [] kutsub välja igal renderdusel
-  // tühja massiivi dependencyna esimest korda
-  // saab ka kutsuda teatud state muutustel välja
-  useEffect(() => {
-    dispatch(updatePosts([
-      {
-        id: 1,
-        title: "Test-prefetched-array-1",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-      {
-        id: 2,
-        title: "Test-prefetched-array-2",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-      {
-        id: 3,
-        title: "Test-prefetched-array-3",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-      {
-        id: 4,
-        title: "Test-prefetched-array-4",
-        text: "sfhieahfajoijiosyiaiufiuhsfihawfehiha",
-        date: Date.now(),
-        author: state.auth.user,
-        changedby: state.auth.user
-      },
-    ]))
-  }, [])
-
-  // Või võite panna eraldi nupu, et "Get latest from database" (Sync)
+  useEffect(()=>{
+    fetch('http://localhost:8081/api/post/').then(res => {
+      return res.json();
+    }).then(async (data) =>{
+      console.log(data);
+      await dispatch(updatePosts(data))
+      console.log(state.posts.data)
+    }); 
+  },[]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,20 +37,24 @@ function Posts() {
 
 
   const addNewPost = () => {
+    
+    
+    const nullUser = state.auth.user == null ? "none" : state.auth.user
+    
     const newPost = {
-      id: Date.now(),
       title,
       text,
       date: Date.now(),
-      author: state.auth.user,
-      changedby: state.auth.user
+      author: nullUser
     };
-
-    // Salvestame andmebaasi ja kui on edukas, 
-    // siis teeme dispatchi ja uuendame state lokaalselt
-
-    dispatch(addPost(newPost));
-    console.log(state.posts.data);
+    fetch('http://localhost:8081/api/post/create', {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(newPost),
+    } ).then(async (res) => {
+      console.log(res)
+      await dispatch(addPost(newPost));
+    });
   };
 
   console.log({ inputRef1, inputRef2 });
@@ -91,13 +64,18 @@ function Posts() {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: '_id',
+      key: '_id',
     },
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
+    },
+    {
+      title: 'Text',
+      dataIndex: 'text',
+      key: 'text',
     },
     {
       title: 'Date',
@@ -118,7 +96,7 @@ function Posts() {
     dataIndex: 'operation',
     render: (_, record) =>
       state.posts.data.length >= 1 ? (
-        <Link to={`/posts/${record.id}`}><EditOutlined /></Link>
+        <Link to={`/posts/${record._id}`}><EditOutlined /></Link>
       ) : null,
   },
   ];
@@ -130,25 +108,33 @@ function Posts() {
       <h1>Posts</h1>
       <form onSubmit={handleSubmit}>
         <label>Post title:</label>
-        <input
+      <br/>
+        <Input
+          placeholder="Title"
           ref={inputRef1}
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           autoFocus
         />
+        <br/>
         <label>Post text:</label>
-        <input
+      <br/>
+        <Input
+          placeholder="Text"
           ref={inputRef2}
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
           autoFocus
         />
-        <button type="submit">Submit</button>
+        <br/><br/>
+        <Button htmlType="submit" type="primary">Submit</Button>
       </form>
       
-      <Table style={{textAlign: "center" }} columns={columns} dataSource={state.posts.data}  />
+      <br/>
+      <br/>
+      <Table columns={columns} pagination={false} dataSource={state.posts.data}  />
     </div>
   );
 }

@@ -1,9 +1,6 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from "./components/Header";
-import Greeting from "./components/Greeting";
-import Fun from "./components/Fun";
 import Posts from "./pages/Posts";
-import StateExample from "./components/StateExample";
 import EditPost from "./pages/EditPost";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -11,7 +8,6 @@ import Register from "./components/Register";
 function App() {
   return (
     <div>
-      <h1>Some text</h1>
       <BrowserRouter>
         <Route path="/" component={Header} />
         <Switch>
@@ -19,9 +15,6 @@ function App() {
           <Route exact path="/posts" component={Posts} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/greeting" component={Greeting} />
-          <Route exact path="/fun" component={Fun} />
-          <Route exact path="/ex" component={StateExample} />
         </Switch>
       </BrowserRouter>
     </div>

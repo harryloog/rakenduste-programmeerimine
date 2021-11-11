@@ -1,38 +1,55 @@
-import { loginUser } from "../store/actions"
-import { Context } from "../store";
+import { loginUser } from "../store/actions";
+import { Button, Input } from 'antd';
 import { useContext, useState } from "react";
+import { Context } from "../store";
+import { useHistory } from "react-router-dom";
+import PropTypes from 'prop-types';
+import './App.css';
 
-const Login = () => {
-    const [user, setUsername] = useState("")
-    const [token, setPassword] = useState("")
+export default function Login ({setUser}){
+    const [user, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [error, setError] = useState("");
     const [state, dispatch] = useContext(Context);
+    const history = useHistory();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setUsername("");
-        setPassword("");
+        const token = await (await fetch('http://localhost:8081/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({user, password}),
+            })).json();
 
-
-        const data = {
-            token,
-            user
-        }
-
-        dispatch(loginUser(data));        
+        if(token.token) {
+            setUser(token);
+            setError("")
+          } else if (token.error){
+            setError(token.error)
+          } else {
+            setError(token.msg['0'].msg)
+          }
+        
+        await dispatch(loginUser(token));
+        history.push('/posts');
     }
 
-    return(
-        <div>
+    return (
+        <div style={{ textAlign: "center" }}>
             <form onSubmit={handleSubmit}>
                 <label>Username:</label><br/>
-                <input type = "text" onChange={(e) => setUsername(e.target.value)} /><br/>
+                <Input placeholder="Email" type = "text" onChange={(e) => setUsername(e.target.value)} /><br/>
                 <label>Password:</label><br/>
-                <input type = "text" onChange={(e) => setPassword(e.target.value)} /><br/>
-                <button type="submit">Login</button><br/>
+                <Input.Password onChange={(e) => setPassword(e.target.value)} /><br/>
+                <Button type="primary" htmlType="submit">Login</Button><br/>
             </form>
         </div>
-    )
+    );
 }
 
-export default Login;
+Login.propTypes = {
+    setUser: PropTypes.func.isRequired
+  };
